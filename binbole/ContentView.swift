@@ -17,7 +17,7 @@ struct ContentView: View {
                         .padding(.horizontal)
 
                     ForEach(clipboardManager.pinnedItems, id: \.self) { item in
-                        ClipboardItemView(text: item, isPinned: true, clipboardManager: clipboardManager)
+                        ClipboardItemView(text: item, clipboardManager: clipboardManager)
                     }
 
                     Divider()
@@ -26,7 +26,7 @@ struct ContentView: View {
 
                 // Regular History Section
                 ForEach(clipboardManager.clipboardHistory, id: \.self) { item in
-                    ClipboardItemView(text: item, isPinned: false, clipboardManager: clipboardManager)
+                    ClipboardItemView(text: item, clipboardManager: clipboardManager)
                 }
             }
             .padding()
@@ -36,8 +36,12 @@ struct ContentView: View {
 
 struct ClipboardItemView: View {
     let text: String
-    let isPinned: Bool
-    let clipboardManager: ClipboardManager
+    @StateObject var clipboardManager: ClipboardManager
+
+    var isPinned: Bool {
+        clipboardManager.pinnedItems.contains(text)
+    }
+
     var body: some View {
         HStack {
             Button(action: {
@@ -79,4 +83,5 @@ struct ClipboardItemView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
 
